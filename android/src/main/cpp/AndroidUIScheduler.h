@@ -32,6 +32,7 @@ class AndroidUIScheduler : public jni::HybridClass<AndroidUIScheduler> {
   friend HybridBase;
 
   void triggerUI();
+  void waitUntilTickEnd();
 
   jni::global_ref<AndroidUIScheduler::javaobject> javaPart_;
   std::shared_ptr<UIScheduler> uiScheduler_;

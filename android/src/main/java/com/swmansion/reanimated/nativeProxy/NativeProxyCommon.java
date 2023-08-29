@@ -44,6 +44,7 @@ public abstract class NativeProxyCommon {
   private ReanimatedKeyboardEventListener reanimatedKeyboardEventListener;
   private Long firstUptime = SystemClock.uptimeMillis();
   private boolean slowAnimationsEnabled = false;
+  private EventHandler mEventHandler;
 
   protected NativeProxyCommon(ReactApplicationContext context) {
     mAndroidUIScheduler = new AndroidUIScheduler(context);
@@ -163,6 +164,7 @@ public abstract class NativeProxyCommon {
 
   @DoNotStrip
   public void registerEventHandler(EventHandler handler) {
+    mEventHandler = handler;
     handler.mCustomEventNamesResolver = mNodesManager.getEventNameResolver();
     mNodesManager.registerEventHandler(handler);
   }
@@ -194,6 +196,7 @@ public abstract class NativeProxyCommon {
 
   public void onCatalystInstanceDestroy() {
     mAndroidUIScheduler.deactivate();
+    mEventHandler.setIgnoreEvent(true);
     getHybridData().resetNative();
   }
 

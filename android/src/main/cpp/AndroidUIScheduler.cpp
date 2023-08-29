@@ -47,6 +47,10 @@ void AndroidUIScheduler::triggerUI() {
   uiScheduler_->triggerUI();
 }
 
+void AndroidUIScheduler::waitUntilTickEnd() {
+  while (uiScheduler_->isBusy) {}
+}
+
 void AndroidUIScheduler::scheduleTriggerOnUI() {
   static const auto method =
       javaPart_->getClass()->getMethod<void()>("scheduleTriggerOnUI");
@@ -57,6 +61,7 @@ void AndroidUIScheduler::registerNatives() {
   registerHybrid({
       makeNativeMethod("initHybrid", AndroidUIScheduler::initHybrid),
       makeNativeMethod("triggerUI", AndroidUIScheduler::triggerUI),
+      makeNativeMethod("waitUntilTickEnd", AndroidUIScheduler::waitUntilTickEnd),
   });
 }
 

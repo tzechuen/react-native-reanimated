@@ -8,11 +8,14 @@ import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 @DoNotStrip
 public class EventHandler implements RCTEventEmitter {
 
   @DoNotStrip private final HybridData mHybridData;
   UIManagerModule.CustomEventNamesResolver mCustomEventNamesResolver;
+  private AtomicBoolean ignoreEvent = new AtomicBoolean(false);
 
   @DoNotStrip
   private EventHandler(HybridData hybridData) {
@@ -21,6 +24,9 @@ public class EventHandler implements RCTEventEmitter {
 
   @Override
   public void receiveEvent(int emitterReactTag, String eventName, @Nullable WritableMap event) {
+    if (ignoreEvent.get()) {
+      return;
+    }
     String resolvedEventName = mCustomEventNamesResolver.resolveCustomEventName(eventName);
     receiveEvent(resolvedEventName, emitterReactTag, event);
   }
@@ -32,5 +38,9 @@ public class EventHandler implements RCTEventEmitter {
   public void receiveTouches(
       String eventName, WritableArray touches, WritableArray changedIndices) {
     // not interested in processing touch events this way, we process raw events only
+  }
+
+  public void setIgnoreEvent(boolean ignoreEvent) {
+    this.ignoreEvent.set(ignoreEvent);
   }
 }

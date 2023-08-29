@@ -35,6 +35,8 @@ public class AndroidUIScheduler {
 
   public native void triggerUI();
 
+  public native void waitUntilTickEnd();
+
   @DoNotStrip
   private void scheduleTriggerOnUI() {
     UiThreadUtil.runOnUiThread(
@@ -47,5 +49,6 @@ public class AndroidUIScheduler {
 
   public void deactivate() {
     mActive.set(false);
+    waitUntilTickEnd();
   }
 }

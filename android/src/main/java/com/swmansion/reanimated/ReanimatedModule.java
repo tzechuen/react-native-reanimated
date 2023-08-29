@@ -11,6 +11,9 @@ import com.facebook.react.uimanager.UIBlock;
 import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.UIManagerModuleListener;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import javax.annotation.Nullable;
 
 @ReactModule(name = ReanimatedModule.NAME)
@@ -18,6 +21,7 @@ public class ReanimatedModule extends ReactContextBaseJavaModule
     implements LifecycleEventListener, UIManagerModuleListener {
 
   public static final String NAME = "ReanimatedModule";
+  private static final List<ReanimatedModule> modulesToClear = Collections.synchronizedList(new ArrayList<>());
 
   private interface UIThreadOperation {
     void execute(NodesManager nodesManager);
@@ -28,6 +32,12 @@ public class ReanimatedModule extends ReactContextBaseJavaModule
 
   public ReanimatedModule(ReactApplicationContext reactContext) {
     super(reactContext);
+    if (!modulesToClear.isEmpty()) {
+      for (ReanimatedModule reanimatedModule : modulesToClear) {
+        reanimatedModule.onCatalystInstanceDestroy();
+      }
+    }
+    modulesToClear.add(this);
   }
 
   @Override
@@ -122,5 +132,6 @@ public class ReanimatedModule extends ReactContextBaseJavaModule
     if (mNodesManager != null) {
       mNodesManager.onCatalystInstanceDestroy();
     }
+    modulesToClear.remove(this);
   }
 }

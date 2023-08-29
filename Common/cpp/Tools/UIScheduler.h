@@ -13,6 +13,7 @@ class UIScheduler {
   virtual void scheduleOnUI(std::function<void()> job);
   virtual void triggerUI();
   virtual ~UIScheduler() = default;
+  std::atomic<bool> isBusy{false};
 
  protected:
   std::atomic<bool> scheduledOnUI_{false};
