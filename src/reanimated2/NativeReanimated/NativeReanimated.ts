@@ -67,10 +67,11 @@ export class NativeReanimated {
   private InnerNativeModule: NativeReanimatedModule;
 
   constructor() {
-    // if (global.__reanimatedModuleProxy === undefined) {
+    if (global.__reanimatedModuleProxy === undefined) {
+      console.log('mleko')
       const { ReanimatedModule } = NativeModules;
       ReanimatedModule?.installTurboModule();
-    // }
+    }
     if (global.__reanimatedModuleProxy === undefined) {
       throw new Error(
         `[Reanimated] Native part of Reanimated doesn't seem to be initialized.

@@ -24,6 +24,8 @@ namespace reanimated {
 using namespace facebook;
 using namespace react;
 
+int NativeProxy::counter = 0;
+
 NativeProxy::NativeProxy(
     jni::alias_ref<NativeProxy::javaobject> jThis,
     jsi::Runtime *rnRuntime,
@@ -46,6 +48,7 @@ NativeProxy::NativeProxy(
           uiScheduler,
           getPlatformDependentMethods())),
       layoutAnimations_(std::move(layoutAnimations)) {
+  std::lock_guard<std::mutex> lock(mutex_);
 #ifdef RCT_NEW_ARCH_ENABLED
   const auto &uiManager =
       fabricUIManager->getBinding()->getScheduler()->getUIManager();
@@ -66,8 +69,13 @@ NativeProxy::NativeProxy(
   // reactScheduler_ = binding->getScheduler();
   // reactScheduler_->addEventListener(eventListener_);
 #endif
-  int a = 0;
-  a = a + 9;
+
+  counter++;
+  if (counter > 1) {
+    int a = 0;
+    a = a + 9;
+//    assert(false);
+  }
 }
 
 NativeProxy::~NativeProxy() {
@@ -79,7 +87,24 @@ NativeProxy::~NativeProxy() {
   // has already been destroyed when AnimatedSensorModule's
   // destructor is ran
   nativeReanimatedModule_->cleanupSensors();
+//  nativeReanimatedModule_->jsInvoker_->invokeSync([&](){
+//      jsi::Runtime &rnRuntime = *rnRuntime_;
+//      jsi::Value cxxValueToDeallocate = rnRuntime.global().getProperty(rnRuntime, jsi::PropNameID::forAscii(rnRuntime, "__reanimatedModuleProxy"));
+//      if (cxxValueToDeallocate.isObject()) {
+//        // Cast the value to your C++ object's pointer type
+//        auto cxxObjectToDeallocate = std::static_pointer_cast<NativeReanimatedModule>(cxxValueToDeallocate.getObject(rnRuntime).getHostObject(rnRuntime));
+//        // Call any necessary clean-up operations or destruction logic
+//        cxxObjectToDeallocate.reset();
+//      }
+//      rnRuntime.global().setProperty(
+//        rnRuntime,
+//        jsi::PropNameID::forAscii(rnRuntime, "__reanimatedModuleProxy"),
+//        jsi::Value::undefined());
+//  });
+  nativeReanimatedModule_.reset();
+
   javaPart_ = nullptr;
+  counter--;
 }
 
 jni::local_ref<NativeProxy::jhybriddata> NativeProxy::initHybrid(

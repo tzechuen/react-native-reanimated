@@ -7,6 +7,7 @@ import type {
   Ref,
 } from 'react';
 import React from 'react';
+import NativeReanimatedModule from './reanimated2/NativeReanimated';
 import { findNodeHandle, Platform, StyleSheet } from 'react-native';
 import WorkletEventHandler from './reanimated2/WorkletEventHandler';
 import setAndForwardRef from './setAndForwardRef';
@@ -49,7 +50,6 @@ import type {
 import { makeViewDescriptorsSet } from './reanimated2/ViewDescriptorsSet';
 import { getShadowNodeWrapperFromRef } from './reanimated2/fabricUtils';
 import updateProps from './reanimated2/UpdateProps';
-import NativeReanimatedModule from './reanimated2/NativeReanimated';
 import { isSharedValue } from './reanimated2/utils';
 import type { AnimateProps } from './reanimated2/helperTypes';
 import { removeFromPropsRegistry } from './reanimated2/PropsRegistry';

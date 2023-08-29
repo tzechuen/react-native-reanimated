@@ -180,6 +180,7 @@ class NativeProxy : public jni::HybridClass<NativeProxy> {
   std::shared_ptr<NativeReanimatedModule> nativeReanimatedModule_;
   jni::global_ref<LayoutAnimations::javaobject> layoutAnimations_;
   std::mutex mutex_;
+  static int counter;
 #ifdef RCT_NEW_ARCH_ENABLED
   std::shared_ptr<ReanimatedCommitHook> commitHook_;
 #if REACT_NATIVE_MINOR_VERSION >= 73
