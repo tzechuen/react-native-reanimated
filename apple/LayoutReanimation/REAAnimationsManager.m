@@ -1,11 +1,11 @@
-#import <RNReanimated/REAAnimationsManager.h>
-#import <RNReanimated/REASharedElement.h>
-#import <RNReanimated/REASharedTransitionManager.h>
-#import <RNReanimated/REASwizzledUIManager.h>
 #import <React/RCTComponentData.h>
 #import <React/RCTTextView.h>
 #import <React/UIView+Private.h>
 #import <React/UIView+React.h>
+#import <Reanimated/REAAnimationsManager.h>
+#import <Reanimated/REASharedElement.h>
+#import <Reanimated/REASharedTransitionManager.h>
+#import <Reanimated/REASwizzledUIManager.h>
 
 typedef NS_ENUM(NSInteger, FrameConfigType) { EnteringFrame, ExitingFrame };
 

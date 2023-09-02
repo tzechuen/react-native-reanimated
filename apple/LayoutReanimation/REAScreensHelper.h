@@ -7,7 +7,7 @@
 #import <RNScreens/RNSScreenStack.h>
 #endif
 
-#import <RNReanimated/REAUIKit.h>
+#import <Reanimated/REAUIKit.h>
 
 @interface REAScreensHelper : NSObject
 

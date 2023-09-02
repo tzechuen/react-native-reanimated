@@ -1,7 +1,7 @@
 #if defined(RCT_NEW_ARCH_ENABLED) && REACT_NATIVE_MINOR_VERSION >= 73
 
 #include "ReanimatedMountHook.h"
-#include "ReanimatedCommitMarker.h"
+#include <Reanimated/ReanimatedCommitMarker.h>
 
 namespace reanimated {
 

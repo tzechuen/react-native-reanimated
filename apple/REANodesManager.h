@@ -5,7 +5,7 @@
 #import <React/RCTSurfacePresenterStub.h>
 #endif
 
-#import <RNReanimated/READisplayLink.h>
+#import <Reanimated/READisplayLink.h>
 
 @class REAModule;
 

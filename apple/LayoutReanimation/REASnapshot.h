@@ -1,5 +1,5 @@
 #import <Foundation/Foundation.h>
-#import <RNReanimated/REAUIKit.h>
+#import <Reanimated/REAUIKit.h>
 
 NS_ASSUME_NONNULL_BEGIN
 

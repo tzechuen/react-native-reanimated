@@ -1,7 +1,7 @@
 #if __cplusplus
 
-#import <RNReanimated/NativeReanimatedModule.h>
 #import <React/RCTEventDispatcher.h>
+#import <Reanimated/NativeReanimatedModule.h>
 #include <memory>
 
 namespace reanimated {

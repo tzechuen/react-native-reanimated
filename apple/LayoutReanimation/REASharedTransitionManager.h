@@ -1,5 +1,5 @@
-#import <RNReanimated/REAAnimationsManager.h>
-#import <RNReanimated/REASnapshot.h>
+#import <Reanimated/REAAnimationsManager.h>
+#import <Reanimated/REASnapshot.h>
 
 @interface REASharedTransitionManager : NSObject
 

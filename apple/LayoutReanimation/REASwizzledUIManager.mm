@@ -1,12 +1,12 @@
-#import <RNReanimated/FeaturesConfig.h>
-#import <RNReanimated/REASwizzledUIManager.h>
-#import <RNReanimated/REAUIKit.h>
-#import <RNReanimated/REAUtils.h>
 #import <React/RCTLayoutAnimation.h>
 #import <React/RCTLayoutAnimationGroup.h>
 #import <React/RCTRootShadowView.h>
 #import <React/RCTRootViewInternal.h>
 #import <React/RCTUIManager.h>
+#import <Reanimated/FeaturesConfig.h>
+#import <Reanimated/REASwizzledUIManager.h>
+#import <Reanimated/REAUIKit.h>
+#import <Reanimated/REAUtils.h>
 
 @interface RCTUIManager (Reanimated)
 @property REAAnimationsManager *animationsManager;

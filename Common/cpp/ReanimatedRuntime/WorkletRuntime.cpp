@@ -1,9 +1,9 @@
 #include "WorkletRuntime.h"
-#include "JSISerializer.h"
-#include "Logger.h"
-#include "ReanimatedRuntime.h"
-#include "WorkletRuntimeCollector.h"
-#include "WorkletRuntimeDecorator.h"
+#include <Reanimated/JSISerializer.h>
+#include <Reanimated/Logger.h>
+#include <Reanimated/ReanimatedRuntime.h>
+#include <Reanimated/WorkletRuntimeCollector.h>
+#include <Reanimated/WorkletRuntimeDecorator.h>
 
 namespace reanimated {
 

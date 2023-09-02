@@ -2,11 +2,11 @@
 
 #define CHECK_SPEED 1
 
+#include <Reanimated/Logger.h>
 #include <chrono>
 #include <functional>
 #include <memory>
 #include <string>
-#include "./Logger.h"
 
 namespace reanimated {
 

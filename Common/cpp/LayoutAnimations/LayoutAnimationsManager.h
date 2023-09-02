@@ -1,10 +1,10 @@
 #pragma once
 
-#include "LayoutAnimationType.h"
-#include "Shareables.h"
+#include <Reanimated/LayoutAnimationType.h>
+#include <Reanimated/Shareables.h>
 
 #ifdef DEBUG
-#include "JSLogger.h"
+#include <Reanimated/JSLogger.h>
 #endif
 
 #include <jsi/jsi.h>

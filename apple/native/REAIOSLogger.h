@@ -1,4 +1,4 @@
-#import <RNReanimated/ReanimatedHiddenHeaders.h>
+#import <Reanimated/ReanimatedHiddenHeaders.h>
 #include <stdio.h>
 
 namespace reanimated {

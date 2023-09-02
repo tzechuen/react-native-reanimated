@@ -1,9 +1,9 @@
 #ifndef RCT_NEW_ARCH_ENABLED
 
-#import <RNReanimated/RCTEventDispatcher+Reanimated.h>
-#import <RNReanimated/REAModule.h>
 #import <React/RCTBridge+Private.h>
 #import <React/RCTEventDispatcher.h>
+#import <Reanimated/RCTEventDispatcher+Reanimated.h>
+#import <Reanimated/REAModule.h>
 #import <objc/message.h>
 
 @implementation RCTEventDispatcher (Reanimated)

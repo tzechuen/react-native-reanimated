@@ -2,9 +2,9 @@
 
 #include <ReactCommon/CallInvoker.h>
 
-#include <memory>
+#include <Reanimated/ThreadSafeQueue.h>
 
-#include "ThreadSafeQueue.h"
+#include <memory>
 
 namespace reanimated {
 

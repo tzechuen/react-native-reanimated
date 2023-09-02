@@ -3,8 +3,8 @@
 #include <cxxreact/MessageQueueThread.h>
 #include <jsi/jsi.h>
 
-#include "JSScheduler.h"
-#include "Shareables.h"
+#include <Reanimated/JSScheduler.h>
+#include <Reanimated/Shareables.h>
 
 #include <memory>
 #include <string>

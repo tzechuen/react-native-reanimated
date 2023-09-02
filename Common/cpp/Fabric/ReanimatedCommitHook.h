@@ -3,9 +3,9 @@
 
 #include <react/renderer/uimanager/UIManagerCommitHook.h>
 
-#include <memory>
+#include <Reanimated/PropsRegistry.h>
 
-#include "PropsRegistry.h"
+#include <memory>
 
 using namespace facebook::react;
 

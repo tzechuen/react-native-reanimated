@@ -1,7 +1,7 @@
 #ifdef RCT_NEW_ARCH_ENABLED
 
 #include "ShadowTreeCloner.h"
-#include "FabricUtils.h"
+#include <FabricUtils.h>
 
 namespace reanimated {
 

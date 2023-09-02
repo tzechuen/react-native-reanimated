@@ -2,9 +2,9 @@
 
 #include <jsi/jsi.h>
 
-#include <memory>
+#include <Reanimated/NativeReanimatedModule.h>
 
-#include "NativeReanimatedModule.h"
+#include <memory>
 
 using namespace facebook;
 

@@ -1,4 +1,4 @@
-#import <RNReanimated/REAIOSUIScheduler.h>
+#import <Reanimated/REAIOSUIScheduler.h>
 
 namespace reanimated {
 

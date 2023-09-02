@@ -1,8 +1,8 @@
 #import <Foundation/Foundation.h>
-#import <RNReanimated/REAScreensHelper.h>
-#import <RNReanimated/REASnapshot.h>
 #import <React/RCTView.h>
 #import <React/UIView+React.h>
+#import <Reanimated/REAScreensHelper.h>
+#import <Reanimated/REASnapshot.h>
 
 NS_ASSUME_NONNULL_BEGIN
 

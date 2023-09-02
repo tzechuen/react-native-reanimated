@@ -14,25 +14,25 @@
 #include <unordered_map>
 
 #ifdef RCT_NEW_ARCH_ENABLED
-#include "FabricUtils.h"
-#include "ReanimatedCommitMarker.h"
-#include "ShadowTreeCloner.h"
+#include <Reanimated/FabricUtils.h>
+#include <Reanimated/ReanimatedCommitMarker.h>
+#include <Reanimated/ShadowTreeCloner.h>
 #endif
 
-#include "EventHandlerRegistry.h"
-#include "FeaturesConfig.h"
-#include "JSScheduler.h"
-#include "ReanimatedHiddenHeaders.h"
-#include "Shareables.h"
-#include "UIRuntimeDecorator.h"
-#include "WorkletEventHandler.h"
+#include <Reanimated/EventHandlerRegistry.h>
+#include <Reanimated/FeaturesConfig.h>
+#include <Reanimated/JSScheduler.h>
+#include <Reanimated/ReanimatedHiddenHeaders.h>
+#include <Reanimated/Shareables.h>
+#include <Reanimated/UIRuntimeDecorator.h>
+#include <Reanimated/WorkletEventHandler.h>
 
 #ifdef __ANDROID__
 #include <fbjni/fbjni.h>
 #endif
 
 #ifdef DEBUG
-#include "JSLogger.h"
+#include <Reanimated/JSLogger.h>
 #endif
 
 using namespace facebook;

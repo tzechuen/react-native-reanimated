@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "JSScheduler.h"
+#include <Reanimated/JSScheduler.h>
 
 #include <memory>
 #include <string>

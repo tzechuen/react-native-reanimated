@@ -1,8 +1,8 @@
-#import <RNReanimated/REAFrame.h>
-#import <RNReanimated/REAScreensHelper.h>
-#import <RNReanimated/REASharedElement.h>
-#import <RNReanimated/REASharedTransitionManager.h>
-#import <RNReanimated/REAUtils.h>
+#import <Reanimated/REAFrame.h>
+#import <Reanimated/REAScreensHelper.h>
+#import <Reanimated/REASharedElement.h>
+#import <Reanimated/REASharedTransitionManager.h>
+#import <Reanimated/REAUtils.h>
 
 @implementation REASharedTransitionManager {
   NSMutableDictionary<NSNumber *, REAUIView *> *_sharedTransitionParent;

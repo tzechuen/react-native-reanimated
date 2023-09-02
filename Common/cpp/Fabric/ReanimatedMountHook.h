@@ -2,7 +2,7 @@
 
 #if defined(RCT_NEW_ARCH_ENABLED) && REACT_NATIVE_MINOR_VERSION >= 73
 
-#include "PropsRegistry.h"
+#include <Reanimated/PropsRegistry.h>
 
 #include <react/renderer/uimanager/UIManagerMountHook.h>
 

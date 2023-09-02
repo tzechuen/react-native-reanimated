@@ -1,6 +1,6 @@
 #ifndef RCT_NEW_ARCH_ENABLED
 
-#import <RNReanimated/REAInitializer.h>
+#import <Reanimated/REAInitializer.h>
 
 namespace reanimated {
 

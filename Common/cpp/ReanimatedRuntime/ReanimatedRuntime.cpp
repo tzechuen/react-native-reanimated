@@ -7,7 +7,7 @@
 #include <utility>
 
 #if JS_RUNTIME_HERMES
-#include "ReanimatedHermesRuntime.h"
+#include <Reanimated/ReanimatedHermesRuntime.h>
 #elif JS_RUNTIME_V8
 #include <v8runtime/V8RuntimeFactory.h>
 #else

@@ -1,7 +1,7 @@
 #pragma once
 
+#include <Reanimated/LoggerInterface.h>
 #include <memory>
-#include "./LoggerInterface.h"
 
 namespace reanimated {
 

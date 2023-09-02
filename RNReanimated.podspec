@@ -33,7 +33,7 @@ Pod::Spec.new do |s|
   s.author       = { "author" => "author@domain.cn" }
   s.platforms    = { :ios => "9.0", :tvos => "9.0", :osx => "10.14" }
   s.source       = { :git => "https://github.com/software-mansion/react-native-reanimated.git", :tag => "#{s.version}" }
-
+  s.header_dir = "Reanimated"
   s.source_files = [
     "apple/**/*.{mm,h,m}",
     "Common/cpp/**/*.{cpp,h}"

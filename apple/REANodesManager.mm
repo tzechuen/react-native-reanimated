@@ -1,8 +1,8 @@
-#import <RNReanimated/READisplayLink.h>
-#import <RNReanimated/REAModule.h>
-#import <RNReanimated/REANodesManager.h>
-#import <RNReanimated/REAUIKit.h>
 #import <React/RCTConvert.h>
+#import <Reanimated/READisplayLink.h>
+#import <Reanimated/REAModule.h>
+#import <Reanimated/REANodesManager.h>
+#import <Reanimated/REAUIKit.h>
 
 #ifdef RCT_NEW_ARCH_ENABLED
 #import <React/RCTComponentViewRegistry.h>

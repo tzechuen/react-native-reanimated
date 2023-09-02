@@ -4,8 +4,8 @@
 #import <React/RCTSurfaceView.h>
 #import <memory>
 
-#import <RNReanimated/REAInitializerRCTFabricSurface.h>
-#import <RNReanimated/REAModule.h>
+#import <Reanimated/REAInitializerRCTFabricSurface.h>
+#import <Reanimated/REAModule.h>
 
 @implementation REAInitializerRCTFabricSurface {
   std::shared_ptr<facebook::react::SurfaceHandler> _surfaceHandler;

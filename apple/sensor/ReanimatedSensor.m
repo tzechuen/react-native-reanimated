@@ -1,4 +1,4 @@
-#import <RNReanimated/ReanimatedSensor.h>
+#import <Reanimated/ReanimatedSensor.h>
 
 #if !TARGET_OS_TV && !TARGET_OS_OSX
 @implementation ReanimatedSensor

@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
-#import <RNReanimated/RNGestureHandlerStateManager.h>
 #import <React/RCTUIManager.h>
+#import <Reanimated/RNGestureHandlerStateManager.h>
 #include <string>
 #include <utility>
 #include <vector>

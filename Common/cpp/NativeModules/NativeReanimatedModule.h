@@ -4,28 +4,28 @@
 #include <react/renderer/uimanager/UIManager.h>
 #endif
 
+#include <Reanimated/AnimatedSensorModule.h>
+#include <Reanimated/EventHandlerRegistry.h>
+#include <Reanimated/JSScheduler.h>
+#include <Reanimated/LayoutAnimationsManager.h>
+#include <Reanimated/NativeReanimatedModuleSpec.h>
+#include <Reanimated/PlatformDepMethodsHolder.h>
+#include <Reanimated/SingleInstanceChecker.h>
+#include <Reanimated/UIScheduler.h>
+
+#ifdef RCT_NEW_ARCH_ENABLED
+#include <Reanimated/PropsRegistry.h>
+#include <Reanimated/ReanimatedCommitHook.h>
+#if REACT_NATIVE_MINOR_VERSION >= 73
+#include <Reanimated/ReanimatedMountHook.h>
+#endif
+#endif
+
 #include <memory>
 #include <string>
 #include <unordered_set>
 #include <utility>
 #include <vector>
-
-#include "AnimatedSensorModule.h"
-#include "EventHandlerRegistry.h"
-#include "JSScheduler.h"
-#include "LayoutAnimationsManager.h"
-#include "NativeReanimatedModuleSpec.h"
-#include "PlatformDepMethodsHolder.h"
-#include "SingleInstanceChecker.h"
-#include "UIScheduler.h"
-
-#ifdef RCT_NEW_ARCH_ENABLED
-#include "PropsRegistry.h"
-#include "ReanimatedCommitHook.h"
-#if REACT_NATIVE_MINOR_VERSION >= 73
-#include "ReanimatedMountHook.h"
-#endif
-#endif
 
 namespace reanimated {
 

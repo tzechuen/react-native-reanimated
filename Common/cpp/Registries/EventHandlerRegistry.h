@@ -2,6 +2,8 @@
 
 #include <jsi/jsi.h>
 
+#include <Reanimated/WorkletRuntime.h>
+
 #include <map>
 #include <memory>
 #include <mutex>
@@ -10,8 +12,6 @@
 #include <unordered_map>
 #include <utility>
 #include <vector>
-
-#include "WorkletRuntime.h"
 
 using namespace facebook;
 

@@ -1,6 +1,6 @@
-#import <RNReanimated/LayoutAnimationType.h>
-#import <RNReanimated/REASnapshot.h>
-#import <RNReanimated/REAUIKit.h>
+#import <Reanimated/LayoutAnimationType.h>
+#import <Reanimated/REASnapshot.h>
+#import <Reanimated/REAUIKit.h>
 
 @interface REASharedElement : NSObject
 

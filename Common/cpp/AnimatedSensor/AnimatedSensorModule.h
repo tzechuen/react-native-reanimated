@@ -1,12 +1,12 @@
 #pragma once
 
+#include <Reanimated/PlatformDepMethodsHolder.h>
+#include <Reanimated/Shareables.h>
+#include <Reanimated/WorkletRuntime.h>
+
 #include <jsi/jsi.h>
 #include <memory>
 #include <unordered_set>
-
-#include "PlatformDepMethodsHolder.h"
-#include "Shareables.h"
-#include "WorkletRuntime.h"
 
 namespace reanimated {
 

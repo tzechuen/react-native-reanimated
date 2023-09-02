@@ -1,5 +1,5 @@
 #import <Foundation/Foundation.h>
-#import <RNReanimated/REAIOSLogger.h>
+#import <Reanimated/REAIOSLogger.h>
 
 namespace reanimated {
 

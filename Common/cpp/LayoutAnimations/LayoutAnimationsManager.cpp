@@ -1,10 +1,9 @@
 #include "LayoutAnimationsManager.h"
-#include "CollectionUtils.h"
-#include "Shareables.h"
+#include <Reanimated/CollectionUtils.h>
+#include <Reanimated/Shareables.h>
 
 #ifdef DEBUG
 #include <utility>
-#include "JSLogger.h"
 #endif
 
 namespace reanimated {

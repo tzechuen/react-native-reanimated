@@ -1,5 +1,5 @@
 #include "UIScheduler.h"
-#include "ReanimatedRuntime.h"
+#include <Reanimated/ReanimatedRuntime.h>
 
 #include <utility>
 

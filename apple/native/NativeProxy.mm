@@ -1,20 +1,20 @@
-#import <RNReanimated/LayoutAnimationsManager.h>
-#import <RNReanimated/NativeMethods.h>
-#import <RNReanimated/NativeProxy.h>
-#import <RNReanimated/REAAnimationsManager.h>
-#import <RNReanimated/REAIOSUIScheduler.h>
-#import <RNReanimated/REAJSIUtils.h>
-#import <RNReanimated/REAKeyboardEventObserver.h>
-#import <RNReanimated/REAMessageThread.h>
-#import <RNReanimated/REAModule.h>
-#import <RNReanimated/REANodesManager.h>
-#import <RNReanimated/REASwizzledUIManager.h>
-#import <RNReanimated/RNGestureHandlerStateManager.h>
-#import <RNReanimated/ReanimatedRuntime.h>
-#import <RNReanimated/ReanimatedSensorContainer.h>
+#import <Reanimated/LayoutAnimationsManager.h>
+#import <Reanimated/NativeMethods.h>
+#import <Reanimated/NativeProxy.h>
+#import <Reanimated/REAAnimationsManager.h>
+#import <Reanimated/REAIOSUIScheduler.h>
+#import <Reanimated/REAJSIUtils.h>
+#import <Reanimated/REAKeyboardEventObserver.h>
+#import <Reanimated/REAMessageThread.h>
+#import <Reanimated/REAModule.h>
+#import <Reanimated/REANodesManager.h>
+#import <Reanimated/REASwizzledUIManager.h>
+#import <Reanimated/RNGestureHandlerStateManager.h>
+#import <Reanimated/ReanimatedRuntime.h>
+#import <Reanimated/ReanimatedSensorContainer.h>
 
 #ifdef DEBUG
-#import <RNReanimated/REAScreensHelper.h>
+#import <Reanimated/REAScreensHelper.h>
 #endif
 
 #ifdef RCT_NEW_ARCH_ENABLED
@@ -31,7 +31,7 @@
 #import <dlfcn.h>
 #endif
 
-#import <RNReanimated/READisplayLink.h>
+#import <Reanimated/READisplayLink.h>
 
 @interface RCTBridge (JSIRuntime)
 - (void *)runtime;
