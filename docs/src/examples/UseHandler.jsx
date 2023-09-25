@@ -30,7 +30,7 @@ const TIME_UNIT = {
 
 export default function TestUseHandler1() {
   const scale = useSharedValue(1);
-  const [time, setTime] = React.useState('0');
+  const [time, setTime] = React.useState('0 seconds');
   const [unit, setUnit] = React.useState(TIME_UNIT.SECOND);
 
   const handlers = {
@@ -89,7 +89,7 @@ export default function TestUseHandler1() {
     <View style={styles.container}>
       <Animated.ScrollView
         onScroll={customScrollHandler}
-        showsVerticalScrollIndicator={false}
+        // showsVerticalScrollIndicator={false}
         style={styles.listContent}
         contentContainerStyle={{ alignItems: 'center' }}
         horizontal={true}>
@@ -119,10 +119,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   listContent: {
+    backgroundColor: 'blue',
     maxHeight: 300,
+    width: '100%',
   },
   box: {
-    width: 100,
+    width: 300,
     height: 100,
     backgroundColor: 'red',
     margin: 10,

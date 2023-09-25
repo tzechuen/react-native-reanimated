@@ -164,6 +164,7 @@ export function createAnimatedComponent(
           has('current', prop) &&
           prop.current instanceof WorkletEventHandler
         ) {
+          console.log(prop.current.huj);
           if (viewTag === null) {
             viewTag = findNodeHandle(options?.setNativeProps ? this : node);
           }

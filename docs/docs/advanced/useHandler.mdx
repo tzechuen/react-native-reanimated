@@ -45,20 +45,11 @@ The hook returns a context that will be reused by event handlers and value that 
 
 ## Example
 
-```js
-function useAnimatedPagerScrollHandler(handlers, dependencies) {
-  const { context, doDependenciesDiffer, useWeb } = useHandler(handlers, dependencies);
+import DecayTrain from '@site/src/examples/UseHandler';
+import DecayTrainSrc from '!!raw-loader!@site/src/examples/UseHandler';
 
-  return useEvent(
-    (event) => {
-      'worklet';
-      const { onPageScroll } = handlers;
-
-      if (onPageScroll && event.eventName.endsWith('onPageScroll')) {
-        onPageScroll(event, context);
-      }
-    },
-    ['onPageScroll'],
-    doDependenciesDiffer,
-  );
-```
+<InteractiveExample
+  src={DecayTrainSrc}
+  component={<DecayTrain />}
+  label="Grab and drag the train"
+/>

@@ -53,5 +53,7 @@ export function useEvent<Event extends object, Context = never>(
   }
 
   // We cast it since we don't want to expose initial null value outside.
+  console.log('created');
+  initRef.current.huj = 'gnuj';
   return initRef as EventHandlerInternal<Event>;
 }
