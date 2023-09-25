@@ -44,7 +44,8 @@ export function useHandler<
   Context extends Record<string, unknown>
 >(
   handlers: GeneralHandlers<Event, Context>,
-  dependencies?: DependencyList
+  dependencies?: DependencyList,
+  initialContext?: Context
 ): UseHandlerContext<Context>;
 
 export function useHandler<
@@ -52,12 +53,13 @@ export function useHandler<
   Context extends Record<string, unknown>
 >(
   handlers: GeneralWorkletHandlers<Event, Context>,
-  dependencies?: DependencyList
+  dependencies?: DependencyList,
+  initialContext: Context = {} as Context
 ): UseHandlerContext<Context> {
   const initRef = useRef<ContextWithDependencies<Context> | null>(null);
   if (initRef.current === null) {
     initRef.current = {
-      context: makeRemote<Context>({} as Context),
+      context: makeRemote<Context>(initialContext),
       savedDependencies: [],
     };
   }
