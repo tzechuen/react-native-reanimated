@@ -28,7 +28,7 @@ module.exports = function (): PluginItem {
     },
     visitor: {
       CallExpression: {
-        enter(path: NodePath<CallExpression>, state: ReanimatedPluginPass) {
+        enter(path, state: ReanimatedPluginPass) {
           if (state.opts.onlyAddWorkletDirectives) {
             return;
           }
@@ -62,9 +62,9 @@ module.exports = function (): PluginItem {
         },
       },
       Program: {
-        enter(path, state: ReanimatedPluginPass) {
+        enter(path) {
           runWithTaggedExceptions(() => {
-            processIfWorkletFile(path, state);
+            processIfWorkletFile(path);
           });
         },
       },
