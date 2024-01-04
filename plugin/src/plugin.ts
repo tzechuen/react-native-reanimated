@@ -1,5 +1,4 @@
 import type { PluginItem, NodePath } from '@babel/core';
-import type { CallExpression } from '@babel/types';
 import { processForCalleesWorklets } from './processForCalleesWorklets';
 import type { ExplicitWorklet, ReanimatedPluginPass } from './types';
 import { processIfWorkletNode } from './processIfWorkletNode';
