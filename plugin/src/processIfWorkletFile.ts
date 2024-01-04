@@ -16,12 +16,12 @@ import type { NodePath } from '@babel/core';
 export function processIfWorkletFile(path: NodePath<Program>) {
   if (
     path.node.directives.some(
-      (directive) => directive.value.value === 'worklet'
+      (functionDirective) => functionDirective.value.value === 'worklet'
     )
   ) {
     processWorkletFile(path);
     path.node.directives = path.node.directives.filter(
-      (directive) => directive.value.value !== 'worklet'
+      (functionDirective) => functionDirective.value.value !== 'worklet'
     );
   }
 }
@@ -60,7 +60,9 @@ function processVariableDeclaration(path: NodePath<VariableDeclaration>) {
 
 function appendWorkletDirective(node: BlockStatement) {
   if (
-    !node.directives.some((directive) => directive.value.value === 'worklet')
+    !node.directives.some(
+      (functionDirective) => functionDirective.value.value === 'worklet'
+    )
   ) {
     node.directives.push(directive(directiveLiteral('worklet')));
   }

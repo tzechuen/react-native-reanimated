@@ -1007,9 +1007,9 @@ var require_processIfWorkletFile = __commonJS({
     exports2.processIfWorkletFile = void 0;
     var types_1 = require("@babel/types");
     function processIfWorkletFile(path) {
-      if (path.node.directives.some((directive) => directive.value.value === "worklet")) {
+      if (path.node.directives.some((functionDirective) => functionDirective.value.value === "worklet")) {
         processWorkletFile(path);
-        path.node.directives = path.node.directives.filter((directive) => directive.value.value !== "worklet");
+        path.node.directives = path.node.directives.filter((functionDirective) => functionDirective.value.value !== "worklet");
       }
     }
     exports2.processIfWorkletFile = processIfWorkletFile;
@@ -1042,7 +1042,7 @@ var require_processIfWorkletFile = __commonJS({
       });
     }
     function appendWorkletDirective(node) {
-      if (!node.directives.some((directive) => directive.value.value === "worklet")) {
+      if (!node.directives.some((functionDirective) => functionDirective.value.value === "worklet")) {
         node.directives.push((0, types_1.directive)((0, types_1.directiveLiteral)("worklet")));
       }
     }
