@@ -117,9 +117,6 @@ public class ReanimatedModule extends ReactContextBaseJavaModule
     if (isDestroyed.get()) {
       return;
     }
-    if (lastReanimatedModule == null) {
-      return;
-    }
     // When debugging in chrome the JS context is not available.
     // https://github.com/facebook/react-native/blob/v0.67.0-rc.6/ReactAndroid/src/main/java/com/facebook/react/modules/blob/BlobCollector.java#L25
     Utils.isChromeDebugger = getReactApplicationContext().getJavaScriptContextHolder().get() == 0;

@@ -55,14 +55,7 @@ NativeProxy::NativeProxy(
           getPlatformDependentMethods(),
           valueUnpackerCode)),
       layoutAnimations_(std::move(layoutAnimations)){
-    currentId = ++newId;
     counter++;
-    if (counter > 1 || currentId > 1000 || currentId < -1000) {
-      int a = 9;
-      (void)a;
-    }
-    int a = 9;
-    (void)a;
 #ifdef RCT_NEW_ARCH_ENABLED
   const auto &uiManager =
       fabricUIManager->getBinding()->getScheduler()->getUIManager();

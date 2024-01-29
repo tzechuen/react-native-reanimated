@@ -25,9 +25,6 @@ class AndroidUIScheduler : public jni::HybridClass<AndroidUIScheduler> {
   std::shared_ptr<UIScheduler> getUIScheduler() {
     return uiScheduler_;
   }
-  static std::atomic<int> newId;
-  std::atomic<int> currentId = 0;
-  static std::atomic<int> counter;
 
   void scheduleTriggerOnUI();
   ~AndroidUIScheduler();
