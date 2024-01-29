@@ -25,12 +25,15 @@ class AndroidUIScheduler : public jni::HybridClass<AndroidUIScheduler> {
   std::shared_ptr<UIScheduler> getUIScheduler() {
     return uiScheduler_;
   }
+  static std::atomic<int> newId;
+  std::atomic<int> currentId = 0;
+  static std::atomic<int> counter;
 
   void scheduleTriggerOnUI();
-
+  ~AndroidUIScheduler();
  private:
   friend HybridBase;
-
+  std::mutex mutex_;
   void triggerUI();
 
   jni::global_ref<AndroidUIScheduler::javaobject> javaPart_;
@@ -38,6 +41,7 @@ class AndroidUIScheduler : public jni::HybridClass<AndroidUIScheduler> {
 
   explicit AndroidUIScheduler(
       jni::alias_ref<AndroidUIScheduler::jhybridobject> jThis);
+
 };
 
 } // namespace reanimated

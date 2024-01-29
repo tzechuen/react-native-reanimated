@@ -28,6 +28,9 @@ namespace reanimated {
 using namespace facebook;
 using namespace react;
 
+std::atomic<int> NativeProxy::newId = 0;
+std::atomic<int> NativeProxy::counter = 0;
+
 NativeProxy::NativeProxy(
     jni::alias_ref<NativeProxy::javaobject> jThis,
     jsi::Runtime *rnRuntime,
@@ -40,7 +43,9 @@ NativeProxy::NativeProxy(
         fabricUIManager,
 #endif
     const std::string &valueUnpackerCode)
-    : javaPart_(jni::make_global(jThis)),
+    :
+      jsCallInvoker_(jsCallInvoker),
+      javaPart_(jni::make_global(jThis)),
       rnRuntime_(rnRuntime),
       nativeReanimatedModule_(std::make_shared<NativeReanimatedModule>(
           *rnRuntime,
@@ -49,7 +54,15 @@ NativeProxy::NativeProxy(
           uiScheduler,
           getPlatformDependentMethods(),
           valueUnpackerCode)),
-      layoutAnimations_(std::move(layoutAnimations)) {
+      layoutAnimations_(std::move(layoutAnimations)){
+    currentId = ++newId;
+    counter++;
+    if (counter > 1 || currentId > 1000 || currentId < -1000) {
+      int a = 9;
+      (void)a;
+    }
+    int a = 9;
+    (void)a;
 #ifdef RCT_NEW_ARCH_ENABLED
   const auto &uiManager =
       fabricUIManager->getBinding()->getScheduler()->getUIManager();
@@ -74,6 +87,12 @@ NativeProxy::~NativeProxy() {
   // has already been destroyed when AnimatedSensorModule's
   // destructor is ran
   nativeReanimatedModule_->cleanupSensors();
+  RNRuntimeDecorator::clean(*rnRuntime_, jsCallInvoker_);
+  int a = 9;
+  (void)a;
+  counter--;
+  isDestructed = true;
+  currentId = -5;
 }
 
 jni::local_ref<NativeProxy::jhybriddata> NativeProxy::initHybrid(
@@ -186,9 +205,24 @@ void NativeProxy::registerNatives() {
        makeNativeMethod("performOperations", NativeProxy::performOperations)});
 }
 
+bool NativeProxy::isJavaStillValid() {
+    if (javaPart_ == nullptr || javaPart_.get() == nullptr) {
+        return false;
+    }
+    if (currentId != newId) {
+      int a = 9;
+      a++;
+//        return false;
+    }
+    return true;
+}
+
 void NativeProxy::requestRender(
     std::function<void(double)> onRender,
     jsi::Runtime &) {
+  if (!isJavaStillValid()) {
+    return;
+  }
   static const auto method =
       getJniMethod<void(AnimationFrameCallback::javaobject)>("requestRender");
   method(
@@ -197,6 +231,9 @@ void NativeProxy::requestRender(
 }
 
 void NativeProxy::registerEventHandler() {
+if (!isJavaStillValid()) {
+    return;
+}
   auto eventHandler = bindThis(&NativeProxy::handleEvent);
   static const auto method =
       getJniMethod<void(EventHandler::javaobject)>("registerEventHandler");
@@ -206,6 +243,9 @@ void NativeProxy::registerEventHandler() {
 }
 
 void NativeProxy::maybeFlushUIUpdatesQueue() {
+  if (!isJavaStillValid()) {
+    return;
+  }
   static const auto method = getJniMethod<void()>("maybeFlushUIUpdatesQueue");
   method(javaPart_.get());
 }
@@ -231,7 +271,10 @@ void NativeProxy::configureProps(
     jsi::Runtime &rt,
     const jsi::Value &uiProps,
     const jsi::Value &nativeProps) {
-  static const auto method = getJniMethod<void(
+    if (!isJavaStillValid()) {
+        return;
+    }
+    static const auto method = getJniMethod<void(
       ReadableNativeArray::javaobject, ReadableNativeArray::javaobject)>(
       "configureProps");
   method(
@@ -244,7 +287,10 @@ void NativeProxy::configureProps(
 }
 
 void NativeProxy::updateProps(jsi::Runtime &rt, const jsi::Value &operations) {
-  static const auto method =
+    if (!isJavaStillValid()) {
+        return;
+    }
+    static const auto method =
       getJniMethod<void(int, JMap<JString, JObject>::javaobject)>(
           "updateProps");
   auto array = operations.asObject(rt).asArray(rt);
@@ -261,6 +307,9 @@ void NativeProxy::updateProps(jsi::Runtime &rt, const jsi::Value &operations) {
 }
 
 void NativeProxy::scrollTo(int viewTag, double x, double y, bool animated) {
+    if (!isJavaStillValid()) {
+        return;
+    }
   static const auto method =
       getJniMethod<void(int, double, double, bool)>("scrollTo");
   method(javaPart_.get(), viewTag, x, y, animated);
@@ -277,6 +326,9 @@ void NativeProxy::dispatchCommand(
     const int viewTag,
     const jsi::Value &commandNameValue,
     const jsi::Value &argsValue) {
+    if (!isJavaStillValid()) {
+        return;
+    }
   static const auto method = getJniMethod<void(
       int, jni::local_ref<JString>, jni::local_ref<ReadableArray::javaobject>)>(
       "dispatchCommand");
@@ -289,6 +341,9 @@ void NativeProxy::dispatchCommand(
 }
 
 std::vector<std::pair<std::string, double>> NativeProxy::measure(int viewTag) {
+    if (!isJavaStillValid()) {
+        return {};
+    }
   static const auto method =
       getJniMethod<local_ref<JArrayFloat>(int)>("measure");
   local_ref<JArrayFloat> output = method(javaPart_.get(), viewTag);
@@ -331,6 +386,9 @@ int NativeProxy::registerSensor(
     int interval,
     int,
     std::function<void(double[], int)> setter) {
+    if (!isJavaStillValid()) {
+        return -1;
+    }
   static const auto method =
       getJniMethod<int(int, int, SensorSetter::javaobject)>("registerSensor");
   return method(
@@ -340,11 +398,17 @@ int NativeProxy::registerSensor(
       SensorSetter::newObjectCxxArgs(std::move(setter)).get());
 }
 void NativeProxy::unregisterSensor(int sensorId) {
+    if (!isJavaStillValid()) {
+        return;
+    }
   static const auto method = getJniMethod<void(int)>("unregisterSensor");
   method(javaPart_.get(), sensorId);
 }
 
 void NativeProxy::setGestureState(int handlerTag, int newState) {
+    if (!isJavaStillValid()) {
+        return;
+    }
   static const auto method = getJniMethod<void(int, int)>("setGestureState");
   method(javaPart_.get(), handlerTag, newState);
 }
@@ -352,6 +416,9 @@ void NativeProxy::setGestureState(int handlerTag, int newState) {
 int NativeProxy::subscribeForKeyboardEvents(
     std::function<void(int, int)> keyboardEventDataUpdater,
     bool isStatusBarTranslucent) {
+    if (!isJavaStillValid()) {
+        return -1;
+    }
   static const auto method =
       getJniMethod<int(KeyboardEventDataUpdater::javaobject, bool)>(
           "subscribeForKeyboardEvents");
@@ -364,12 +431,18 @@ int NativeProxy::subscribeForKeyboardEvents(
 }
 
 void NativeProxy::unsubscribeFromKeyboardEvents(int listenerId) {
+    if (!isJavaStillValid()) {
+        return;
+    }
   static const auto method =
       getJniMethod<void(int)>("unsubscribeFromKeyboardEvents");
   method(javaPart_.get(), listenerId);
 }
 
 double NativeProxy::getAnimationTimestamp() {
+    if (!isJavaStillValid()) {
+        return 0;
+    }
   static const auto method = getJniMethod<jlong()>("getAnimationTimestamp");
   jlong output = method(javaPart_.get());
   return static_cast<double>(output);

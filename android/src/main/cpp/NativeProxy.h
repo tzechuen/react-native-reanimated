@@ -163,7 +163,11 @@ class NativeProxy : public jni::HybridClass<NativeProxy> {
   static void registerNatives();
 
   ~NativeProxy();
-
+  static std::atomic<int> newId;
+  static std::atomic<int> counter;
+  std::atomic<int> currentId = 0;
+  std::atomic<bool> isDestructed = false;
+  std::shared_ptr<facebook::react::CallInvoker> jsCallInvoker_;
  private:
   friend HybridBase;
   jni::global_ref<NativeProxy::javaobject> javaPart_;
@@ -188,7 +192,7 @@ class NativeProxy : public jni::HybridClass<NativeProxy> {
 #endif
   PlatformDepMethodsHolder getPlatformDependentMethods();
   void setupLayoutAnimations();
-
+  bool isJavaStillValid();
   double getAnimationTimestamp();
   bool isAnyHandlerWaitingForEvent(
       const std::string &eventName,

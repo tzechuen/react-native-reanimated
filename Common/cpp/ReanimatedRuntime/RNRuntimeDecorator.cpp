@@ -43,4 +43,21 @@ void RNRuntimeDecorator::decorate(
       jsi::Object::createFromHostObject(rnRuntime, nativeReanimatedModule));
 }
 
+void RNRuntimeDecorator::clean(
+  jsi::Runtime &rnRuntime,
+  const std::shared_ptr<facebook::react::CallInvoker> &jsCallInvoker) {
+  jsCallInvoker->invokeSync([&](){
+    rnRuntime.global().setProperty(
+      rnRuntime,
+      jsi::PropNameID::forAscii(rnRuntime, "__reanimatedModuleProxy"),
+      jsi::Value::undefined()
+    );
+    rnRuntime.global().setProperty(
+      rnRuntime,
+      jsi::PropNameID::forAscii(rnRuntime, "__workletRuntimeCollector"),
+      jsi::Value::undefined()
+    );
+  });
+}
+
 } // namespace reanimated

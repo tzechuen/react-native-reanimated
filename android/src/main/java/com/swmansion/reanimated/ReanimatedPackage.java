@@ -3,6 +3,8 @@ package com.swmansion.reanimated;
 import static com.facebook.react.bridge.ReactMarkerConstants.CREATE_UI_MANAGER_MODULE_END;
 import static com.facebook.react.bridge.ReactMarkerConstants.CREATE_UI_MANAGER_MODULE_START;
 
+import android.util.Log;
+
 import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactPackage;
@@ -23,6 +25,10 @@ import java.util.List;
 import java.util.Map;
 
 public class ReanimatedPackage extends TurboReactPackage implements ReactPackage {
+
+  public ReanimatedPackage() {
+    Log.v("a", "a");
+  }
 
   @Override
   public NativeModule getModule(String name, ReactApplicationContext reactContext) {

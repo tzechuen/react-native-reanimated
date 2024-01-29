@@ -11,6 +11,9 @@ import com.facebook.react.uimanager.UIBlock;
 import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.UIManagerModuleListener;
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
+
 import javax.annotation.Nullable;
 
 @ReactModule(name = ReanimatedModule.NAME)
@@ -25,9 +28,25 @@ public class ReanimatedModule extends ReactContextBaseJavaModule
 
   private ArrayList<UIThreadOperation> mOperations = new ArrayList<>();
   private @Nullable NodesManager mNodesManager;
-
+  private static ReanimatedModule lastReanimatedModule;
+  public static Object mutex = new Object();
+  private static AtomicInteger counter = new AtomicInteger(0);
+  private AtomicBoolean isDestroyed = new AtomicBoolean(false);
+  private int id;
+  private static int idCounter = 0;
   public ReanimatedModule(ReactApplicationContext reactContext) {
     super(reactContext);
+    synchronized (mutex) {
+      if (lastReanimatedModule != null) {
+        lastReanimatedModule.onCatalystInstanceDestroy();
+      }
+      lastReanimatedModule = this;
+      counter.getAndIncrement();
+      id = idCounter++;
+      if (counter.get() > 1) {
+        Log.v("a", "a");
+      }
+    }
   }
 
   @Override
@@ -84,6 +103,9 @@ public class ReanimatedModule extends ReactContextBaseJavaModule
   /*package*/
   public NodesManager getNodesManager() {
     if (mNodesManager == null) {
+      if (isDestroyed.get()) {
+        return null;
+      }
       mNodesManager = new NodesManager(getReactApplicationContext());
     }
 
@@ -91,7 +113,13 @@ public class ReanimatedModule extends ReactContextBaseJavaModule
   }
 
   @ReactMethod(isBlockingSynchronousMethod = true)
-  public void installTurboModule(String valueUnpackerCode) {
+  public synchronized void installTurboModule(String valueUnpackerCode) {
+    if (isDestroyed.get()) {
+      return;
+    }
+    if (lastReanimatedModule == null) {
+      return;
+    }
     // When debugging in chrome the JS context is not available.
     // https://github.com/facebook/react-native/blob/v0.67.0-rc.6/ReactAndroid/src/main/java/com/facebook/react/modules/blob/BlobCollector.java#L25
     Utils.isChromeDebugger = getReactApplicationContext().getJavaScriptContextHolder().get() == 0;
@@ -116,11 +144,17 @@ public class ReanimatedModule extends ReactContextBaseJavaModule
   }
 
   @Override
-  public void onCatalystInstanceDestroy() {
-    super.onCatalystInstanceDestroy();
-
-    if (mNodesManager != null) {
-      mNodesManager.onCatalystInstanceDestroy();
+  public synchronized void onCatalystInstanceDestroy() {
+    synchronized(mutex) {
+      isDestroyed.set(true);
+      super.onCatalystInstanceDestroy();
+      if (mNodesManager != null) {
+        mNodesManager.onCatalystInstanceDestroy();
+      } else {
+        Log.v("a", "a");
+      }
+      lastReanimatedModule = null;
+      counter.getAndDecrement();
     }
   }
 }

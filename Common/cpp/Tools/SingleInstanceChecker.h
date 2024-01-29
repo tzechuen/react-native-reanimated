@@ -35,7 +35,9 @@ class SingleInstanceChecker {
 #endif
 
 #ifdef IS_REANIMATED_EXAMPLE_APP
-      assert(false);
+      int a = 9;
+        (void)a;
+//      assert(false);
 #endif
     }
   }

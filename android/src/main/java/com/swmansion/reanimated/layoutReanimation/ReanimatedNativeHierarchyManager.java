@@ -15,6 +15,7 @@ import com.facebook.react.uimanager.ViewManager;
 import com.facebook.react.uimanager.ViewManagerRegistry;
 import com.facebook.react.uimanager.layoutanimation.LayoutAnimationController;
 import com.facebook.react.uimanager.layoutanimation.LayoutAnimationListener;
+import com.swmansion.reanimated.NodesManager;
 import com.swmansion.reanimated.ReanimatedModule;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
@@ -39,11 +40,19 @@ class ReaLayoutAnimator extends LayoutAnimationController {
 
   public void maybeInit() {
     if (!mInitialized) {
-      mInitialized = true;
       ReanimatedModule reanimatedModule = mContext.getNativeModule(ReanimatedModule.class);
+      if (reanimatedModule == null) {
+        return;
+      }
+      NodesManager nodesManager = reanimatedModule.getNodesManager();
+      if (nodesManager == null) {
+        // it can happen during reload
+        return;
+      }
       mAnimationsManager = reanimatedModule.getNodesManager().getAnimationsManager();
       mAnimationsManager.setReanimatedNativeHierarchyManager(
-          (ReanimatedNativeHierarchyManager) mWeakNativeViewHierarchyManager.get());
+              (ReanimatedNativeHierarchyManager) mWeakNativeViewHierarchyManager.get());
+      mInitialized = true;
     }
   }
 

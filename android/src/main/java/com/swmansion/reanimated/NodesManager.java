@@ -2,6 +2,7 @@ package com.swmansion.reanimated;
 
 import static java.lang.Float.NaN;
 
+import android.util.Log;
 import android.view.View;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.GuardedRunnable;
@@ -39,6 +40,8 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
+
 import javax.annotation.Nullable;
 
 public class NodesManager implements EventDispatcherListener {
@@ -109,7 +112,9 @@ public class NodesManager implements EventDispatcherListener {
     return mAnimationManager;
   }
 
-  public void onCatalystInstanceDestroy() {
+  public synchronized void onCatalystInstanceDestroy() {
+    isDestroyed.set(true);
+    counter.getAndDecrement();
     if (mAnimationManager != null) {
       mAnimationManager.onCatalystInstanceDestroy();
     }
@@ -120,8 +125,11 @@ public class NodesManager implements EventDispatcherListener {
     }
   }
 
-  public void initWithContext(
+  public synchronized void initWithContext(
       ReactApplicationContext reactApplicationContext, String valueUnpackerCode) {
+    if (isDestroyed.get()) {
+      return;
+    }
     mReactApplicationContext = reactApplicationContext;
     mNativeProxy = new NativeProxy(reactApplicationContext, valueUnpackerCode);
     mAnimationManager.setAndroidUIScheduler(getNativeProxy().getAndroidUIScheduler());
@@ -141,8 +149,13 @@ public class NodesManager implements EventDispatcherListener {
 
   private Queue<NativeUpdateOperation> mOperationsInBatch = new LinkedList<>();
   private boolean mTryRunBatchUpdatesSynchronously = false;
-
+  private static AtomicInteger counter = new AtomicInteger(0);
+  private AtomicBoolean isDestroyed = new AtomicBoolean(false);
   public NodesManager(ReactContext context) {
+    counter.getAndIncrement();
+    if (counter.get() > 1) {
+      Log.v("a", "a");
+    }
     mContext = context;
     mUIManager = context.getNativeModule(UIManagerModule.class);
     mUIImplementation = mUIManager.getUIImplementation();

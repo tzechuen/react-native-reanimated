@@ -16,6 +16,9 @@ class RNRuntimeDecorator {
       jsi::Runtime &rnRuntime,
       const std::shared_ptr<NativeReanimatedModule> &nativeReanimatedModule,
       const bool isReducedMotion);
+  static void clean(
+    jsi::Runtime &rnRuntime,
+    const std::shared_ptr<facebook::react::CallInvoker> &jsCallInvoker);
 };
 
 } // namespace reanimated

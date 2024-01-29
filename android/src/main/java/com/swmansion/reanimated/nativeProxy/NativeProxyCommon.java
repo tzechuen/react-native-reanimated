@@ -31,6 +31,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public abstract class NativeProxyCommon {
   static {
@@ -46,8 +48,13 @@ public abstract class NativeProxyCommon {
   private Long firstUptime = SystemClock.uptimeMillis();
   private boolean slowAnimationsEnabled = false;
   protected String cppVersion = null;
-
+private static AtomicInteger counter = new AtomicInteger(0);
+private AtomicBoolean isDestroyed = new AtomicBoolean(false);
   protected NativeProxyCommon(ReactApplicationContext context) {
+    counter.getAndIncrement();
+    if (counter.get() > 1) {
+      Log.v("a", "a");
+    }
     mAndroidUIScheduler = new AndroidUIScheduler(context);
     mContext = new WeakReference<>(context);
     reanimatedSensorContainer = new ReanimatedSensorContainer(mContext);
@@ -226,8 +233,17 @@ public abstract class NativeProxyCommon {
   protected abstract HybridData getHybridData();
 
   public void onCatalystInstanceDestroy() {
+    counter.getAndDecrement();
+    if (counter.get() > 0) {
+      Log.v("a", "a");
+    }
+    if (isDestroyed.get()) {
+      return;
+    }
+    isDestroyed.set(true);
     mAndroidUIScheduler.deactivate();
     getHybridData().resetNative();
+    Log.v("a", "a");
   }
 
   public void prepareLayoutAnimations(LayoutAnimations layoutAnimations) {
@@ -258,8 +274,8 @@ public abstract class NativeProxyCommon {
 
   @DoNotStrip
   void maybeFlushUIUpdatesQueue() {
-    if (!mNodesManager.isAnimationRunning()) {
-      mNodesManager.performOperations();
-    }
+//    if (!mNodesManager.isAnimationRunning()) {
+//      mNodesManager.performOperations();
+//    }
   }
 }
