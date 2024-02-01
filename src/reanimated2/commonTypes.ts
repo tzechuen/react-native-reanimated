@@ -46,16 +46,16 @@ export type FlatShareableRef<T> = T extends ShareableRef<infer U>
   ? ShareableRef<U>
   : ShareableRef<T>;
 
-export type ShareableSyncDataHolderRef<T> = {
-  __hostObjectShareableJSRefSyncDataHolder: T;
-};
+export type MapperRawInputs = unknown[];
+
+export type MapperOutputs = SharedValue[];
 
 export type MapperRegistry = {
   start: (
     mapperID: number,
     worklet: () => void,
-    inputs: SharedValue<any>[],
-    outputs?: SharedValue<any>[]
+    inputs: MapperRawInputs,
+    outputs?: MapperOutputs
   ) => void;
   stop: (mapperID: number) => void;
 };
