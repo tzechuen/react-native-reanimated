@@ -1,7 +1,11 @@
 package com.swmansion.reanimated.keyboardObserver;
 
+import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
+import android.view.KeyCharacterMap;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 import androidx.annotation.NonNull;
@@ -41,6 +45,7 @@ public class ReanimatedKeyboardEventListener {
   private KeyboardState state;
   private final HashMap<Integer, KeyboardEventDataUpdater> listeners = new HashMap<>();
   private boolean isStatusBarTranslucent = false;
+  private int staredTransitionCounter = 0;
 
   public ReanimatedKeyboardEventListener(WeakReference<ReactApplicationContext> reactContext) {
     this.reactContext = reactContext;
@@ -54,40 +59,43 @@ public class ReanimatedKeyboardEventListener {
     View rootView = getRootView();
     WindowCompat.setDecorFitsSystemWindows(
         reactContext.get().getCurrentActivity().getWindow(), false);
-    ViewCompat.setOnApplyWindowInsetsListener(
-        rootView,
-        (v, insets) -> {
-          if (state == KeyboardState.OPEN) {
-            int keyboardHeight =
-                (int)
-                    PixelUtil.toDIPFromPixel(
-                        Math.max(
-                            0,
-                            insets.getInsets(WindowInsetsCompat.Type.ime()).bottom
-                                - insets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom));
+    ViewCompat.setOnApplyWindowInsetsListener(rootView, this::onApplyWindowInsets);
+  }
 
-            updateKeyboard(keyboardHeight);
-          }
-          int paddingBottom = 0;
-          if (!BuildConfig.IS_NEW_ARCHITECTURE_ENABLED
-              && BuildConfig.REACT_NATIVE_MINOR_VERSION < 70) {
-            paddingBottom = insets.getInsets(WindowInsetsCompat.Type.navigationBars()).bottom;
-          }
-          int paddingTop = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top;
-          View content =
-              rootView.getRootView().findViewById(androidx.appcompat.R.id.action_bar_root);
+  private WindowInsetsCompat onApplyWindowInsets(View view, WindowInsetsCompat insets) {
+    if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
+      return insets;
+    }
+    View rootView = getRootView();
+    if (state == KeyboardState.OPEN) {
+      int keyboardHeight =
+              (int)
+                      PixelUtil.toDIPFromPixel(
+                              Math.max(
+                                      0,
+                                      insets.getInsets(WindowInsetsCompat.Type.ime()).bottom
+                                              - insets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom));
 
-          FrameLayout.LayoutParams params =
-              new FrameLayout.LayoutParams(
-                  FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
-          if (isStatusBarTranslucent) {
-            params.setMargins(0, 0, 0, 0);
-          } else {
-            params.setMargins(0, paddingTop, 0, paddingBottom);
-          }
-          content.setLayoutParams(params);
-          return insets;
-        });
+      updateKeyboard(keyboardHeight);
+    }
+    int paddingBottom = 0;
+    if (!BuildConfig.IS_NEW_ARCHITECTURE_ENABLED
+            && BuildConfig.REACT_NATIVE_MINOR_VERSION < 70) {
+      paddingBottom = insets.getInsets(WindowInsetsCompat.Type.navigationBars()).bottom;
+    }
+    int paddingTop = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top;
+    View content =
+            rootView.getRootView().findViewById(androidx.appcompat.R.id.action_bar_root);
+
+    int matchParentFlag = FrameLayout.LayoutParams.MATCH_PARENT;
+    FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(matchParentFlag, matchParentFlag);
+    if (isStatusBarTranslucent) {
+      params.setMargins(0, 0, 0, 0);
+    } else {
+      params.setMargins(0, paddingTop, 0, paddingBottom);
+    }
+    content.setLayoutParams(params);
+    return insets;
   }
 
   private void updateKeyboard(int keyboardHeight) {
@@ -96,6 +104,8 @@ public class ReanimatedKeyboardEventListener {
     }
   }
 
+//  private void app
+
   private class WindowInsetsCallback extends WindowInsetsAnimationCompat.Callback {
     private int keyboardHeight = 0;
 
@@ -103,12 +113,24 @@ public class ReanimatedKeyboardEventListener {
       super(WindowInsetsAnimationCompat.Callback.DISPATCH_MODE_CONTINUE_ON_SUBTREE);
     }
 
+    private boolean isKeyboardAnimation(@NonNull WindowInsetsAnimationCompat animation) {
+      return (animation.getTypeMask() & WindowInsetsCompat.Type.ime()) != 0;
+    }
+
     @NonNull
     @Override
     public WindowInsetsAnimationCompat.BoundsCompat onStart(
         @NonNull WindowInsetsAnimationCompat animation,
         @NonNull WindowInsetsAnimationCompat.BoundsCompat bounds) {
-      state = keyboardHeight == 0 ? KeyboardState.OPENING : KeyboardState.CLOSING;
+      if (!isKeyboardAnimation(animation)) {
+        return bounds;
+      }
+      if (staredTransitionCounter > 0) {
+        state = state == KeyboardState.OPENING ? KeyboardState.CLOSING : KeyboardState.OPENING;
+      } else {
+        state = keyboardHeight == 0 ? KeyboardState.OPENING : KeyboardState.CLOSING;
+      }
+      staredTransitionCounter++;
       updateKeyboard(keyboardHeight);
       return super.onStart(animation, bounds);
     }
@@ -118,21 +140,36 @@ public class ReanimatedKeyboardEventListener {
     public WindowInsetsCompat onProgress(
         @NonNull WindowInsetsCompat insets,
         @NonNull List<WindowInsetsAnimationCompat> runningAnimations) {
-
-      keyboardHeight =
-          (int)
-              PixelUtil.toDIPFromPixel(
-                  Math.max(
-                      0,
-                      insets.getInsets(WindowInsetsCompat.Type.ime()).bottom
-                          - insets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom));
+      boolean isAnyKeyboardAnimation = false;
+      for (WindowInsetsAnimationCompat animation : runningAnimations) {
+        if (isKeyboardAnimation(animation)) {
+          isAnyKeyboardAnimation = true;
+          break;
+        }
+      }
+      if (!isAnyKeyboardAnimation) {
+        return insets;
+      }
+      int windowInsetsType = WindowInsetsCompat.Type.ime();
+      int bottomWindowInset = insets.getInsets(windowInsetsType).bottom;
+      int systemBarsInsetsType = WindowInsetsCompat.Type.systemBars();
+      int statusBar = insets.getInsets(systemBarsInsetsType).bottom;
+      boolean hasNavigationBar = KeyCharacterMap.deviceHasKey(KeyEvent.KEYCODE_HOME);
+      int keyboardHeightDip = hasNavigationBar ? bottomWindowInset - statusBar : bottomWindowInset;
+      keyboardHeight = (int) PixelUtil.toDIPFromPixel(Math.max(0, keyboardHeightDip));
       updateKeyboard(keyboardHeight);
       return insets;
     }
 
     @Override
     public void onEnd(@NonNull WindowInsetsAnimationCompat animation) {
-      state = keyboardHeight == 0 ? KeyboardState.CLOSED : KeyboardState.OPEN;
+      if (!isKeyboardAnimation(animation)) {
+        return;
+      }
+      staredTransitionCounter--;
+      if (staredTransitionCounter == 0) {
+        state = keyboardHeight == 0 ? KeyboardState.CLOSED : KeyboardState.OPEN;
+      }
       updateKeyboard(keyboardHeight);
     }
   }

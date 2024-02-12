@@ -32,6 +32,7 @@ export function useAnimatedKeyboard(
     };
     listenerId.current = subscribeForKeyboardEvents((state, height) => {
       'worklet';
+      console.log(state, height);
       keyboardEventData.state.value = state;
       keyboardEventData.height.value = height;
     }, options);

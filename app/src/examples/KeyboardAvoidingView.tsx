@@ -116,8 +116,9 @@ export default function KeyboardAvoidingViewExample(): React.ReactElement {
         contentContainerStyle={styles.flexOne}>
         <Animated.FlatList
           inverted
-          contentContainerStyle={{ flex: 1 }}
+          // contentContainerStyle={{ flex: 1 }}
           data={DATA}
+          keyboardDismissMode={'on-drag'}
           keyExtractor={(item, index) => index.toString()}
           renderItem={({ item }) => (
             <ListItem onLongPress={() => {}} item={item} />
